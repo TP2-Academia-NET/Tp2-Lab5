@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Business.Logic;
 using Business.Entities;
+using Util;
 
 namespace UI.Desktop
 {
@@ -31,13 +32,7 @@ namespace UI.Desktop
             MapearDeDatos();
         }
 
-        private Usuario _UsuarioActual;
-
-        public Usuario UsuarioActual
-        {
-            get { return _UsuarioActual; }
-            set { _UsuarioActual = value; }
-        }
+        public Usuario UsuarioActual { get; set; }
 
         public virtual void MapearDeDatos()
         {
@@ -90,7 +85,7 @@ namespace UI.Desktop
             bool valida = false;
             string mensaje = "";
 
-            if (txtNombre.Text.Trim() == "")
+            if (Validaciones.isEmpty(txtNombre.Text))
                 mensaje += "El nombre no puede estar en blanco" + "\n";
             if (txtApellido.Text.Trim() == "")
                 mensaje += "El apellido no puede estar en blanco" + "\n";
@@ -146,5 +141,110 @@ namespace UI.Desktop
         {
             this.Close();
         }
+
+        private void txtNombre_Leave(object sender, EventArgs e)
+        {
+            if (Validaciones.isEmpty(txtNombre.Text)) { errorNombre.SetError(txtNombre, "Ingrese un Nombre"); }
+            else
+            {
+                if (Validaciones.minChar(txtNombre.Text, 3)) { errorNombre.SetError(txtNombre, "Caracteres minimos 3"); }
+                else { errorNombre.Clear(); }
+            }           
+        }
+
+        private void txtApellido_Leave(object sender, EventArgs e)
+        {
+            if (Validaciones.isEmpty(txtApellido.Text)) { errorApellido.SetError(txtApellido, "Ingrese un Apellido"); }
+            else
+            {
+                if (Validaciones.minChar(txtApellido.Text, 3)) { errorApellido.SetError(txtApellido, "Caracteres minimos 3"); }
+                else { errorApellido.Clear(); }
+            }
+        }
+
+        private void txtNombre_Enter(object sender, EventArgs e)
+        {
+            errorNombre.Clear();
+        }
+
+        private void txtApellido_Enter(object sender, EventArgs e)
+        {
+            errorApellido.Clear();
+        }
+
+        private void txtEmail_Leave(object sender, EventArgs e)
+        {
+            if (Validaciones.isEmpty(txtEmail.Text)) { errorEmail.SetError(txtEmail, "Ingrese un Email"); } 
+            else
+            {
+                if (!Validaciones.isEmail(txtEmail.Text)) { errorEmail.SetError(txtEmail, "No es un formato de Email valido"); }
+                else { errorEmail.Clear(); } 
+            }
+        }
+
+        private void txtEmail_Enter(object sender, EventArgs e)
+        {
+            errorEmail.Clear();
+        }
+
+        private void txtNombre_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!(char.IsLetter(e.KeyChar)) && (e.KeyChar != (char)Keys.Back))
+            {                
+                e.Handled = true;
+                return;
+            }
+        }
+
+        private void txtApellido_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!(char.IsLetter(e.KeyChar)) && (e.KeyChar != (char)Keys.Back))
+            {
+                e.Handled = true;
+                return;
+            }
+        }
+
+        private void txtClave_Leave(object sender, EventArgs e)
+        {
+            if (Validaciones.isEmpty(txtClave.Text)) { errorClave.SetError(txtClave, "Ingrese una Clave"); }
+            else
+            {
+                if (Validaciones.minChar(txtClave.Text, 8)) { errorClave.SetError(txtClave, "Caracteres minimos 8"); }
+                else { errorClave.Clear(); }
+            }
+        }
+
+        private void txtClave_Enter(object sender, EventArgs e)
+        {
+            errorClave.Clear();
+        }
+
+        private void txtUsuario_Leave(object sender, EventArgs e)
+        {
+            if (Validaciones.isEmpty(txtUsuario.Text)) { errorUsuario.SetError(txtUsuario, "Ingrese un nombre de Usuario"); }
+            else
+            {
+                if (Validaciones.minChar(txtUsuario.Text, 3)) { errorUsuario.SetError(txtUsuario, "Caracteres minimos 3"); }
+                else { errorUsuario.Clear(); }
+            }
+        }
+
+        private void txtUsuario_Enter(object sender, EventArgs e)
+        {
+            errorUsuario.Clear();
+        }
+
+        private void txtConfirmarClave_Leave(object sender, EventArgs e)
+        {
+            if (!Validaciones.coinciden(txtClave.Text, txtConfirmarClave.Text)) { errorConfirmarClave.SetError(txtConfirmarClave, "Las Claves no coinciden"); }
+            else { errorConfirmarClave.Clear(); }
+        }
+
+        private void txtConfirmarClave_Enter(object sender, EventArgs e)
+        {
+            errorConfirmarClave.Clear();
+        }
+
     }
 }

@@ -25,13 +25,7 @@ namespace UI.Desktop
             Consulta
         }
 
-        private ModoForm _Modo;
-
-        public ModoForm Modo
-        {
-            get { return _Modo; }
-            set { _Modo = value; }
-        }
+        public ModoForm Modo { get; set; }
 
         public virtual void MapearDeDatos() { }
         public virtual void MapearADatos() { }

@@ -2,21 +2,28 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data.SqlClient;
+using System.Configuration;
 
 namespace Data.Database
 {
     public class Adapter
     {
-        //private SqlConnection sqlConnection = new SqlConnection("ConnectionString;");
+        const string consKeyDefaultCnnString = "ConnStringLocal";
 
-        protected void OpenConnection()
+        public SqlConnection sqlConn { get; set; }
+
+        protected SqlConnection OpenConnection()
         {
-            throw new Exception("Metodo no implementado");
+            string stringConnection = ConfigurationManager.ConnectionStrings[consKeyDefaultCnnString].ConnectionString;
+            SqlConnection sqlConn = new SqlConnection(stringConnection);
+            sqlConn.Open();
+            return sqlConn;
         }
 
         protected void CloseConnection()
         {
-            throw new Exception("Metodo no implementado");
+            sqlConn.Close();
+            sqlConn = null;
         }
 
         protected SqlDataReader ExecuteReader(String commandText)

@@ -44,6 +44,7 @@ namespace UI.Desktop
         private void tsbNuevo_Click(object sender, EventArgs e)
         {
             UsuarioDesktop formUsuario = new UsuarioDesktop(ApplicationForm.ModoForm.Alta);
+            formUsuario.Text = "Agregar Usuario";
             formUsuario.ShowDialog();
             this.Listar(); 
         }
